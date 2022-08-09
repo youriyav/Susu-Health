@@ -1,0 +1,93 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Titi",
+      "email": "titi@gmail.fr"
+    },
+    {
+      "id": 2,
+      "name": "Toto",
+      "email": "toto@aol.com"
+    },
+    {
+      "id": 3,
+      "name": "Tata",
+      "email": "tata@orange.fr"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "amount": 10,
+      "date": "2020-01-01",
+      "type": "deposit",
+      "state": "pending"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "amount": 20,
+      "date": "2020-01-02",
+      "type": "deposit",
+      "state": "completed"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "amount": 10,
+      "date": "2020-01-01",
+      "type": "deposit",
+      "state": "pending"
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "amount": 15,
+      "date": "2020-01-02",
+      "type": "deposit",
+      "state": "completed"
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "amount": 20,
+      "date": "2020-02-01",
+      "type": "scheduled_withdrawal",
+      "state": "scheduled"
+    },
+    {
+      "id": 6,
+      "user_id": 1,
+      "amount": 20,
+      "date": "2020-03-01",
+      "type": "scheduled_withdrawal",
+      "state": "scheduled"
+    },
+    {
+      "id": 7,
+      "user_id": 2,
+      "amount": 300,
+      "date": "2020-01-03",
+      "type": "deposit",
+      "state": "completed"
+    },
+    {
+      "id": 8,
+      "user_id": 1,
+      "amount": 40,
+      "date": "2020-01-06",
+      "type": "deposit",
+      "state": "completed"
+    },
+    {
+      "id": 9,
+      "user_id": 1,
+      "amount": 8,
+      "date": "2020-03-01",
+      "type": "refund",
+      "state": "completed"
+    }
+  ]
+}
