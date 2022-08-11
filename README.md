@@ -18,7 +18,9 @@ Mais avant d'attaquer, prends le temps de lire les instructions à suivre :
 - Clone ce repository sur ton compte Github, BitBucket ou Gitlab
 - Implémente la fonctionnalité décrite ci-dessous dans une nouvelle branche
 - Crée une PR et mets-nous (laurent.leconte@susu.fr, alexandre.gbaguidiaisse@susu.fr) en relecteurs de la PR
-- S'il te reste du temps: tu peux identifier les endroits du code existant sur lequel tu penses qu'on peut rendre le code plus lisible, plus efficace... (Note: le fichier `backend/db/in_memory_database.py` est exclu de cet exercice: cette classe a uniquement pour but de pouvoir accéder à des données de test, le code n'est pas très beau)
+- S'il te reste du temps: tu peux identifier les endroits du code existant sur lequel tu penses qu'on peut rendre le code plus lisible, plus efficace...
+  - NOTE 1 : le fichier `backend/db/in_memory_database.py` est exclu de cet exercice: cette classe a uniquement pour but de pouvoir accéder à des données de test, le code n'est pas très beau
+  - NOTE 2 : il ne t'est **pas** demandé de faire une refacto du code. L'idée est d'avoir une discussion ensemble sur les améliorations qu'on pourrait apporter au code.
 - J'insiste : aucun commit directement sur ce repository ! Merci 😉
 
 ## Structure du code
@@ -77,9 +79,9 @@ L'API permet d'interagir avec la liste des transactions d'un utilisateur. Chaque
 
 Il y a 3 types de transactions, décrits par l'énumération `models.TransactionType`:
 
-- un versement (`TransactionType.DEPOSIT`) correspond à un versement fait par l'utilisateur ou un tiers sur sa cagnotte. Un versement _augmente_ le solde de l'utilisateur.
-- un prélèvement programmé (`TransactionType.SCHEDULED_WITHDRAWAL`) correspond à une facturation pour l'utilisation du service. Un prélèvement, une fois effectué, _diminue_ le solde de l'utilisateur.
-- un remboursement (`TransactionType.REFUND`) correspond à un remboursement effectué vers un tiers. Un remboursement _diminue_ le solde de l'utilisateur.
+- un _versement_ (`TransactionType.DEPOSIT`) correspond à un versement fait par l'utilisateur ou un tiers sur sa cagnotte. Un versement _augmente_ le solde de l'utilisateur.
+- un _prélèvement programmé_ (`TransactionType.SCHEDULED_WITHDRAWAL`) correspond à une facturation pour l'utilisation du service. Un prélèvement, une fois effectué, _diminue_ le solde de l'utilisateur.
+- un _remboursement_ (`TransactionType.REFUND`) correspond à un remboursement effectué vers un tiers. Un remboursement _diminue_ le solde de l'utilisateur.
 
 Chaque transaction a un cycle de vie spécifique (décrit par l'énumération `models.TransactionState`) :
 
@@ -88,19 +90,19 @@ Chaque transaction a un cycle de vie spécifique (décrit par l'énumération `m
 
 En plus d'un type et d'un état, une transaction a également les attributs suivants:
 
-- un montant. Ce montant est toujours positif, même si une transaction a pour résultat de diminuer le solde.
-- une date. Pour un versement ou un remboursement, c'est la date de dernier changement d'état (création si l'état est `PENDING`, validation du paiement si l'état est `COMPLETED`, rejet du paiement si l'état est `FAILED`). Pour un versement programmé, c'est la date de prélèvement prévue (si le prélèvement est dans le futur ou si le paiement a échoué) ou effective (si le prélèvement a eu lieu).
+- un _montant_. Ce montant est toujours positif, même si une transaction a pour résultat de diminuer le solde.
+- une _date_. Pour un versement ou un remboursement, c'est la date de dernier changement d'état (création si l'état est `PENDING`, validation du paiement si l'état est `COMPLETED`, rejet du paiement si l'état est `FAILED`). Pour un versement programmé, c'est la date de prélèvement prévue (si le prélèvement est dans le futur ou si le paiement a échoué) ou effective (si le prélèvement a eu lieu). NOTE : pour les besoins de ce test, tu n'as pas besoin de rentrer dans la logique de gestion des dates.
 
 ## Spécifications
 
 ### Fonctionnalité à développer
 
-L'objectif est d'implémenter l'endpoint `/users/{user_id}/transactions/balance`, qui calcule l'état de financement d'un service, c'est-à-dire dans quelle mesure le solde actuel couvre l'ensemble des prélèvements à venir.
+L'objectif est d'implémenter l'endpoint `/users/{user_id}/transactions/balance`, qui calcule l'état de financement d'un utilisateur, c'est-à-dire dans quelle mesure le solde actuel de l'utilisateur couvre la liste des prélèvements à venir.
 
-En appelant cet endpoint, on récupère :
+En appelant cet endpoint, on obtient en réponse :
 
 - la liste des prélèvements programmés futurs (i.e. `SCHEDULED`) d'un utilisateur avec, pour chaque prélèvement:
-  - le montant du prélèvement programmé
+  - le montant du prélèvement
   - le montant couvert par le solde actuel
   - le taux (en pourcent, entre 0 et 100) de couverture du montant
 - le solde de la cagnotte une fois tous les prélèvements futurs couverts, ou 0 si le solde actuel ne permet pas de couvrir tous les prélèvements à venir.
@@ -111,16 +113,17 @@ Pour illustrer le résultat attendu, cet endpoint est appelé par l'application 
 
 ### Règles de calcul
 
+Pour calculer le solde d'une cagnotte :
+
+- on additionne tous les versements à l'état `COMPLETED`
+- on soustrait les prélèvements à l'état `COMPLETED`
+- on soustrait les remboursements à l'état `COMPLETED` **ou** `PENDING`
+
 Pour calculer l'état de financement du service d'un utilisateur donné :
 
-- on calcule le solde de la cagnotte de l'utilisateur
+- on calcule le solde de la cagnotte de l'utilisateur (cf ci-dessus)
 - ensuite on retranche de ce solde le montant de chaque prélèvement programmé, du plus proche au plus lointain
 - on continue tant que le solde est positif ou tant qu'il reste des prélèvements futurs. Si le solde restant ne permet pas de couvrir l'intégralité d'un prélèvement, on calcule le pourcentage de couverture de la façon suivante: (montant du prélèvement - solde) / montant du prélèvement, arrondi à l'entier le plus proche.
-
-Pour calculer le solde de la cagnotte, on prend en compte toutes les transactions `COMPLETED` et :
-
-- on additionne les versements
-- on soustrait les remboursements et les prélèvements
 
 ### Exemples
 
@@ -154,23 +157,24 @@ Pour les transactions suivantes :
   - montant : 20
   - montant couvert : 0
   - taux de couverture : 0
-- le solde une fois tous les prélèvements programmés traités est 0
+- le solde une fois tous les prélèvements traités est 0
 
 Dans ce deuxième exemple :
 
 | type                 | état      | montant | date       |
 | -------------------- | --------- | ------- | ---------- |
-| deposit              | COMPLETED | 30      | 2020-01-01 |
+| deposit              | COMPLETED | 40      | 2020-01-01 |
+| refund               | PENDING   | 10      | 2020-01-15 |
 | scheduled_withdrawal | SCHEDULED | 20      | 2020-01-15 |
 
-- le solde est 30
+- le solde est 40 - 10 = 30
 - le prélèvement programmé est entièrement couvert
 - il reste un solde de 10
 
 ### Autres considérations
 
-- Le code écrit devra contenir des tests couvrant les différents scénarios possibles
-- le code doit passer les tests décrits dans le fichier de CI/CD (`.circleci/config.yml`), à savoir :
-  - le code est correctement formaté (`poetry run black --check .` ne renvoie pas d'erreur). Pour formater le code, la commande à utiliser est `poetry run black .`
-  - le code est conforme à notre politique de linting (`poetry run pylint .` ne renvoie pas d'erreur). La meilleure façon de gérer les erreurs de linting (corriger le code, exclude une ligne explicitement, exclure une catégorie d'erreur en mettant à jour le fichier `.pylintrc`) est laissée à ton appréciation.
-  - les tests passent
+- Ta PR écrit devra contenir des tests couvrant les différents scénarios possibles
+- Le code doit passer les tests décrits dans le fichier de CI/CD (`.circleci/config.yml`), à savoir :
+  - le code est correctement formaté : `poetry run black --check .` ne renvoie pas d'erreur. Pour formater le code, la commande à utiliser est `poetry run black .`
+  - le code est conforme à notre politique de linting : `poetry run pylint .` ne renvoie pas d'erreur. La meilleure façon de gérer les erreurs de linting (corriger le code, exclude une ligne explicitement, exclure une catégorie d'erreur en mettant à jour le fichier `.pylintrc`) est laissée à ton appréciation.
+  - les tests passent.
