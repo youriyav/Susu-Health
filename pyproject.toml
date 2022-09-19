@@ -8,6 +8,7 @@ authors = ["Laurent Leconte <laurent.leconte@susu.fr>"]
 python = "^3.9"
 fastapi = "^0.79.0"
 uvicorn = "^0.18.2"
+mypy = "^0.971"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

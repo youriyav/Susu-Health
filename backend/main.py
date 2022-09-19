@@ -1,8 +1,10 @@
+from typing import Any, List
+
 from fastapi import FastAPI, HTTPException
 
 from backend.db import InMemoryDB
 from backend.logic import transactions
-from backend.models import Transaction
+from backend.models import Transaction, TransactionRow
 
 app = FastAPI()
 
@@ -16,13 +18,13 @@ async def root():
 
 
 @app.get("/users/{user_id}/transactions")
-async def get_transactions(user_id: int):
+async def get_transactions(user_id: int) -> List[TransactionRow]:
     """Returns all transactions for a user."""
     return transactions.transactions(db, user_id)
 
 
 @app.get("/users/{user_id}/transactions/{transaction_id}")
-async def get_transaction(user_id: int, transaction_id: int):
+async def get_transaction(user_id: int, transaction_id: int) -> TransactionRow:
     """Returns a given transaction of the user."""
     transaction = transactions.transaction(db, user_id, transaction_id)
     if transaction is None:
@@ -31,13 +33,13 @@ async def get_transaction(user_id: int, transaction_id: int):
 
 
 @app.post("/users/{user_id}/transactions")
-async def create_transaction(user_id: int, transaction: Transaction):
+async def create_transaction(user_id: int, transaction: Transaction) -> TransactionRow:
     """Adds a new transaction to the list of user transactions."""
     return transactions.create_transaction(db, user_id, transaction)
 
 
 @app.get("/users/{user_id}/transactions/balance")
-async def get_balance(user_id: int):  # pylint: disable=unused-argument
+async def get_balance(user_id: int) -> Any:  # pylint: disable=unused-argument
     """Computes the balance of payments for a user subscription."""
     # We expect you to write this function
     return None

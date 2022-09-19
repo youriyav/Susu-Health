@@ -94,6 +94,7 @@ disable=raw-checker-failed,
         no-method-argument,
         too-many-instance-attributes,
         too-many-locals,
+        redefined-outer-name
 
 # Duplicate-code disabled because pylint cannot diffentiate true duplicate (code that makes the same thing for the same reason at two different places)
 # From false duplicates (code that looks the same but does different things or for different reasons and shouldn't be mutualised.)
@@ -215,6 +216,7 @@ good-names=i,
            k,
            ex,
            Run,
+           db,
            _
 
 # Good variable names regexes, separated by a comma. If names match any regex,

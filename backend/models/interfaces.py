@@ -4,13 +4,13 @@ from typing import Any, List, Optional
 
 class Database(ABC):
     @abstractmethod
-    def scan(self, table: str) -> List[Any]:
+    def scan(self, table_name: str) -> List[Any]:
         pass
 
     @abstractmethod
-    def get(self, table: str, id_: int) -> Optional[Any]:
+    def get(self, table_name: str, id_: int) -> Optional[Any]:
         pass
 
     @abstractmethod
-    def put(self, table: str, item: Any) -> None:
+    def put(self, table_name: str, item: Any) -> None:
         pass

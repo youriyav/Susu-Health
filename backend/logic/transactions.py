@@ -20,7 +20,7 @@ def transactions(db: Database, user_id: int) -> List[TransactionRow]:
     ]
 
 
-def transaction(db, user_id, transaction_id) -> List[TransactionRow]:
+def transaction(db, user_id, transaction_id) -> TransactionRow:
     """
     Returns a given transaction of the user
     """
