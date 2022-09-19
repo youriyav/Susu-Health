@@ -17,11 +17,11 @@ Mais avant d'attaquer, prends le temps de lire les instructions à suivre :
 
 - Clone ce repository sur ton compte Github, BitBucket ou Gitlab
 - Implémente la fonctionnalité décrite ci-dessous dans une nouvelle branche
-- Crée une PR et mets-nous (laurent.leconte@susu.fr, alexandre.gbaguidiaisse@susu.fr) en relecteurs de la PR
+- Crée une PR **sur ton repo** (i.e. de ta branche de développement sur ta branche master) et mets-nous (laurent.leconte@susu.fr, alexandre.gbaguidiaisse@susu.fr) en relecteurs de la PR
 - S'il te reste du temps: tu peux identifier les endroits du code existant sur lequel tu penses qu'on peut rendre le code plus lisible, plus efficace...
   - NOTE 1 : le fichier `backend/db/in_memory_database.py` est exclu de cet exercice: cette classe a uniquement pour but de pouvoir accéder à des données de test, le code n'est pas très beau
   - NOTE 2 : il ne t'est **pas** demandé de faire une refacto du code. L'idée est d'avoir une discussion ensemble sur les améliorations qu'on pourrait apporter au code.
-- J'insiste : aucun commit directement sur ce repository ! Merci 😉
+- J'insiste : aucun commit ni PR directement sur ce repository ! Merci 😉
 
 ## Structure du code
 
@@ -46,6 +46,8 @@ Le point d'entrée dans le code est la fonction `main.py`.
 Le répertoire de tests.
 
 ### Installer et lancer le code
+
+⚠️ Les instructions ci-dessous sont pour **Python 3.9**. Si tu utilises une version plus récente de Python, il faut mettre à jour pytest (`poetry add pytest@latest` _devrait_ fonctionner, mais je n'ai pas testé) sans quoi tu auras des erreurs au lancement des tests.
 
 Pour installer les dépendances:
 
