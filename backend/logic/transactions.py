@@ -20,7 +20,7 @@ def transactions(db: Database, user_id: int) -> List[TransactionRow]:
     ]
 
 
-def transaction(db, user_id, transaction_id) -> TransactionRow:
+def transaction(db: Database, user_id: int, transaction_id: int) -> TransactionRow:
     """
     Returns a given transaction of the user
     """
@@ -28,7 +28,7 @@ def transaction(db, user_id, transaction_id) -> TransactionRow:
     return transaction if transaction and transaction.user_id == user_id else None
 
 
-def create_transaction(db, user_id, transaction: Transaction) -> TransactionRow:
+def create_transaction(db: Database, user_id: int, transaction: Transaction) -> TransactionRow:
     """
     Creates a new transaction (adds an ID) and returns it.
     """

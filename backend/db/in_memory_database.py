@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from typing import Dict, List, Type
+from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel
 
@@ -40,13 +40,13 @@ class InMemoryDB(Database):
             raise KeyError(f"Table {table_name} does not exist")
         return self._tables[table_name].data
 
-    def get(self, table_name: str, id_: int):
+    def get(self, table_name: str, id_: int) -> Optional[Row]:
         """Returns the first row in the table with the given id or None if not found"""
         if table_name not in self._tables:
             raise KeyError(f"Table {table_name} does not exist")
         return next((t for t in self._tables[table_name].data if t.id == id_), None)
 
-    def put(self, table_name: str, item: BaseModel):
+    def put(self, table_name: str, item: BaseModel) -> Row:
         """Adds a new item to the table and returns it
 
         Note: the item's original `id` field is ignored and overwritten with the next available id"""

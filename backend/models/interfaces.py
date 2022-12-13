@@ -12,5 +12,5 @@ class Database(ABC):
         pass
 
     @abstractmethod
-    def put(self, table_name: str, item: Any) -> None:
+    def put(self, table_name: str, item: Any) -> Any:
         pass

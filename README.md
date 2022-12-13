@@ -67,6 +67,8 @@ Pour faire tourner le serveur en local:
 poetry run uvicorn backend.main:app
 ```
 
+Pour consulter la doc API (auto-générée) quand le serveur tourne : http://127.0.0.1:8000/docs
+
 ## Contexte métier
 
 ### Le mécanisme de paiement des services

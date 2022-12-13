@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import FastAPI, HTTPException
 
 from backend.db import InMemoryDB
-from backend.logic import transactions
+from backend.logic import transactions, users
 from backend.models import Transaction, TransactionRow
 
 app = FastAPI()
@@ -17,22 +17,26 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/users/{user_id}/transactions")
+@app.get("/users/{user_id}/transactions", response_model=List[TransactionRow])
 async def get_transactions(user_id: int) -> List[TransactionRow]:
     """Returns all transactions for a user."""
     return transactions.transactions(db, user_id)
 
 
-@app.get("/users/{user_id}/transactions/{transaction_id}")
+@app.get(
+    "/users/{user_id}/transactions/{transaction_id}", response_model=TransactionRow
+)
 async def get_transaction(user_id: int, transaction_id: int) -> TransactionRow:
     """Returns a given transaction of the user."""
+    if users.user(db, user_id) is None:
+        raise HTTPException(status_code=404, detail="User not found")
     transaction = transactions.transaction(db, user_id, transaction_id)
     if transaction is None:
         raise HTTPException(status_code=404, detail="Transaction not found")
     return transaction
 
 
-@app.post("/users/{user_id}/transactions")
+@app.post("/users/{user_id}/transactions", response_model=TransactionRow)
 async def create_transaction(user_id: int, transaction: Transaction) -> TransactionRow:
     """Adds a new transaction to the list of user transactions."""
     return transactions.create_transaction(db, user_id, transaction)

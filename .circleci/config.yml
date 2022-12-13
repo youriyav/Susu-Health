@@ -18,7 +18,7 @@ jobs:
           command: poetry run black --check .
       - run:
           name: Execute pylint
-          working_directory: ~/project/bakend
+          working_directory: ~/project/backend
           command: poetry run pylint .
       - run:
           name: Execute tests

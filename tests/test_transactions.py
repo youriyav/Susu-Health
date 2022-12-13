@@ -42,6 +42,9 @@ def test_get_nonexisting_transaction():
     response = client.get("users/1/transactions/9999")
     assert response.status_code == 404
 
+def test_get_transaction_nonexisting_user():
+    response = client.get("users/999/transactions/1")
+    assert response.status_code == 404
 
 def test_create_transaction(deposit_transaction):
     response = client.post("users/2/transactions", json=deposit_transaction)
