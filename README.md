@@ -17,7 +17,7 @@ Mais avant d'attaquer, prends le temps de lire les instructions à suivre :
 
 - Clone ce repository sur ton compte Github, BitBucket ou Gitlab
 - Implémente la fonctionnalité décrite ci-dessous dans une nouvelle branche
-- Crée une PR **sur ton repo** (i.e. de ta branche de développement sur ta branche master) et mets-nous (laurent.leconte@susu.fr, alexandre.gbaguidiaisse@susu.fr) en relecteurs de la PR
+- Crée une PR **sur ton repo** (i.e. de ta branche de développement sur ta branche master) et mets-nous (laurent.leconte@susu.fr, alexandre.gbaguidiaisse@susu.fr, nathan.boeglin@susu.fr) en relecteurs de la PR
 - S'il te reste du temps: tu peux identifier les endroits du code existant sur lequel tu penses qu'on peut rendre le code plus lisible, plus efficace...
   - NOTE 1 : le fichier `backend/db/in_memory_database.py` est exclu de cet exercice: cette classe a uniquement pour but de pouvoir accéder à des données de test, le code n'est pas très beau
   - NOTE 2 : il ne t'est **pas** demandé de faire une refacto du code. L'idée est d'avoir une discussion ensemble sur les améliorations qu'on pourrait apporter au code.
@@ -179,6 +179,6 @@ Dans ce deuxième exemple :
 
 - Ta PR écrit devra contenir des tests couvrant les différents scénarios possibles
 - Le code doit passer les tests décrits dans le fichier de CI/CD (`.circleci/config.yml`), à savoir :
-  - le code est correctement formaté : `poetry run black --check .` ne renvoie pas d'erreur. Pour formater le code, la commande à utiliser est `poetry run black .`
-  - le code est conforme à notre politique de linting : `poetry run pylint .` ne renvoie pas d'erreur. La meilleure façon de gérer les erreurs de linting (corriger le code, exclude une ligne explicitement, exclure une catégorie d'erreur en mettant à jour le fichier `.pylintrc`) est laissée à ton appréciation.
+  - le code est correctement formaté : `poetry run black --check backend/` ne renvoie pas d'erreur. Pour formater le code, la commande à utiliser est `poetry run black <répertoire>`
+  - le code est conforme à notre politique de linting : `poetry run pylint backend/` ne renvoie pas d'erreur. La meilleure façon de gérer les erreurs de linting (corriger le code, exclure une ligne explicitement, exclure une catégorie d'erreur en mettant à jour le fichier `.pylintrc`) est laissée à ton appréciation.
   - les tests passent.

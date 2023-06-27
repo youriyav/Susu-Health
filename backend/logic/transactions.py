@@ -28,7 +28,9 @@ def transaction(db: Database, user_id: int, transaction_id: int) -> TransactionR
     return transaction if transaction and transaction.user_id == user_id else None
 
 
-def create_transaction(db: Database, user_id: int, transaction: Transaction) -> TransactionRow:
+def create_transaction(
+    db: Database, user_id: int, transaction: Transaction
+) -> TransactionRow:
     """
     Creates a new transaction (adds an ID) and returns it.
     """
