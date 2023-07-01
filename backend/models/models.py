@@ -39,3 +39,13 @@ class Transaction(BaseModel):
 class TransactionRow(Row, Transaction):
     user_id: int
     state: TransactionState
+
+class Withdrawal(BaseModel):
+    amount: int
+    covered: int
+    coverage: int
+
+class Balance(BaseModel):
+    scheduled_withdrawal: list(Withdrawal)
+    remaining: int
+    
