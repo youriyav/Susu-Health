@@ -22,7 +22,7 @@ def caclulate_jackpot(db: Database, user_id: int) -> Balance:
 
 def __get_scheduled_withdrawal(
     all_transactions: List[TransactionRow],
-) -> List[Withdrawal]:
+) -> tuple[List[Withdrawal], int]:
     scheduled_withdrawal = []
     total_amount = __get_jackpot(all_transactions)
 
