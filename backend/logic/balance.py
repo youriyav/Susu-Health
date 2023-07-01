@@ -11,7 +11,9 @@ from backend.models.models import (
 
 
 def caclulate_jackpot(db: Database, user_id: int) -> Balance:
-
+    """Return a list of next scheduled_withdrawal and what is left of the jackpot
+    after all future withdrawall.
+    """
     all_transactions = transactions.transactions(db, user_id)
 
     scheduled_withdrawal, remaining = __get_scheduled_withdrawal(all_transactions)
