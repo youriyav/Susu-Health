@@ -66,5 +66,4 @@ def __get_jackpot(all_transactions: List[TransactionRow]) -> int:
         ):
             total -= transaction.amount
 
-    print(f"get_jackpot {total=}")
     return total

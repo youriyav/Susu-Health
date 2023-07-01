@@ -11,7 +11,7 @@ def test_empty_balance():
 
     assert response.status_code == 200
     balance = Balance(**response.json())
-    print(balance)
+
     assert balance.scheduled_withdrawal[0].amount == 20
     assert balance.scheduled_withdrawal[0].covered == 20
     assert balance.scheduled_withdrawal[0].coverage == 100
