@@ -26,7 +26,8 @@ async def get_transactions(user_id: int) -> List[TransactionRow]:
 @app.get("/users/{user_id}/transactions/balance")
 async def get_balance(user_id: int) -> Any:  # pylint: disable=unused-argument
     """Computes the balance of payments for a user subscription."""
-    # We expect you to write this function
+    if users.user(db, user_id) is None:
+        raise HTTPException(status_code=404, detail="User not found")
     return balance.caclulate_jackpot(db, user_id)
 
 
@@ -46,4 +47,6 @@ async def get_transaction(user_id: int, transaction_id: int) -> TransactionRow:
 @app.post("/users/{user_id}/transactions", response_model=TransactionRow)
 async def create_transaction(user_id: int, transaction: Transaction) -> TransactionRow:
     """Adds a new transaction to the list of user transactions."""
+    if users.user(db, user_id) is None:
+        raise HTTPException(status_code=404, detail="User not found")
     return transactions.create_transaction(db, user_id, transaction)
