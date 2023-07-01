@@ -41,9 +41,8 @@ def __get_scheduled_withdrawal(
             scheduled_withdrawal.append(
                 Withdrawal(amount=amount, covered=covered, coverage=coverage)
             )
-            total_amount -= amount
-            if total_amount < 0:
-                total_amount = 0
+            total_amount = max(total_amount - amount, 0)
+
     return scheduled_withdrawal, total_amount
 
 
