@@ -23,6 +23,13 @@ async def get_transactions(user_id: int) -> List[TransactionRow]:
     return transactions.transactions(db, user_id)
 
 
+@app.get("/users/{user_id}/transactions/balance")
+async def get_balance(user_id: int) -> Any:  # pylint: disable=unused-argument
+    """Computes the balance of payments for a user subscription."""
+    # We expect you to write this function
+    return None
+
+
 @app.get(
     "/users/{user_id}/transactions/{transaction_id}", response_model=TransactionRow
 )
@@ -40,10 +47,3 @@ async def get_transaction(user_id: int, transaction_id: int) -> TransactionRow:
 async def create_transaction(user_id: int, transaction: Transaction) -> TransactionRow:
     """Adds a new transaction to the list of user transactions."""
     return transactions.create_transaction(db, user_id, transaction)
-
-
-@app.get("/users/{user_id}/transactions/balance")
-async def get_balance(user_id: int) -> Any:  # pylint: disable=unused-argument
-    """Computes the balance of payments for a user subscription."""
-    # We expect you to write this function
-    return None
