@@ -5,6 +5,7 @@ from backend.models.models import Balance
 
 client = TestClient(app)
 
+
 def test_empty_balance():
     response = client.get("/users/4/transactions/balance")
 
@@ -22,8 +23,7 @@ def test_empty_balance():
     assert balance.scheduled_withdrawal[2].amount == 20
     assert balance.scheduled_withdrawal[2].covered == 5
     assert balance.scheduled_withdrawal[2].coverage == 25
-  
+
     assert balance.scheduled_withdrawal[3].amount == 20
     assert balance.scheduled_withdrawal[3].covered == 0
     assert balance.scheduled_withdrawal[3].coverage == 0
-

@@ -1,8 +1,13 @@
-
 from typing import List
 from backend.logic import transactions
 from backend.models.interfaces import Database
-from backend.models.models import Balance, TransactionRow, TransactionState, TransactionType, Withdrawal
+from backend.models.models import (
+    Balance,
+    TransactionRow,
+    TransactionState,
+    TransactionType,
+    Withdrawal,
+)
 
 
 def caclulate_jackpot(db: Database, user_id: int) -> Balance:
@@ -10,26 +15,27 @@ def caclulate_jackpot(db: Database, user_id: int) -> Balance:
     all_transactions = transactions.transactions(db, user_id)
 
     scheduled_withdrawal, remaining = __get_scheduled_withdrawal(all_transactions)
-    return Balance(
-        scheduled_withdrawal=scheduled_withdrawal,
-        remaining=remaining
-    )
+    return Balance(scheduled_withdrawal=scheduled_withdrawal, remaining=remaining)
 
 
 def __get_scheduled_withdrawal(
-    all_transactions: List[TransactionRow]
+    all_transactions: List[TransactionRow],
 ) -> List[Withdrawal]:
     scheduled_withdrawal = []
     total_amount = __get_jackpot(all_transactions)
 
     for transaction in all_transactions:
         if (
-            transaction.type == TransactionType.SCHEDULED_WITHDRAWAL and 
-            transaction.state == TransactionState.SCHEDULED
+            transaction.type == TransactionType.SCHEDULED_WITHDRAWAL
+            and transaction.state == TransactionState.SCHEDULED
         ):
             amount = transaction.amount
-            covered = transaction.amount if total_amount >transaction.amount else total_amount
-            coverage = covered / amount  * 100 if covered>0 else 0
+            covered = (
+                transaction.amount
+                if total_amount > transaction.amount
+                else total_amount
+            )
+            coverage = covered / amount * 100 if covered > 0 else 0
             scheduled_withdrawal.append(
                 Withdrawal(amount=amount, covered=covered, coverage=coverage)
             )
@@ -44,20 +50,17 @@ def __get_jackpot(all_transactions: List[TransactionRow]) -> int:
 
     for transaction in all_transactions:
         if (
-            transaction.type == TransactionType.DEPOSIT and 
-            transaction.state == TransactionState.COMPLETED
+            transaction.type == TransactionType.DEPOSIT
+            and transaction.state == TransactionState.COMPLETED
         ):
             total += transaction.amount
         elif (
-            (
-                transaction.type == TransactionType.SCHEDULED_WITHDRAWAL and 
-                transaction.state == TransactionState.COMPLETED
-            )
-            or (
-                transaction.type == TransactionType.REFUND and 
-                transaction.state in 
-                    [TransactionState.COMPLETED, TransactionState.PENDING]
-            )
+            transaction.type == TransactionType.SCHEDULED_WITHDRAWAL
+            and transaction.state == TransactionState.COMPLETED
+        ) or (
+            transaction.type == TransactionType.REFUND
+            and transaction.state
+            in [TransactionState.COMPLETED, TransactionState.PENDING]
         ):
             total -= transaction.amount
 
