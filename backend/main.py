@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import FastAPI, HTTPException
 
 from backend.db import InMemoryDB
-from backend.logic import transactions, users
+from backend.logic import balance, transactions, users
 from backend.models import Transaction, TransactionRow
 
 app = FastAPI()
@@ -27,7 +27,7 @@ async def get_transactions(user_id: int) -> List[TransactionRow]:
 async def get_balance(user_id: int) -> Any:  # pylint: disable=unused-argument
     """Computes the balance of payments for a user subscription."""
     # We expect you to write this function
-    return None
+    return balance.caclulate_jackpot(db, user_id)
 
 
 @app.get(
