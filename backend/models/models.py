@@ -1,5 +1,6 @@
 from datetime import date
 from enum import Enum
+from typing import List
 
 from pydantic import BaseModel
 
@@ -46,6 +47,6 @@ class Withdrawal(BaseModel):
     coverage: int
 
 class Balance(BaseModel):
-    scheduled_withdrawal: list(Withdrawal)
+    scheduled_withdrawal: List[Withdrawal]
     remaining: int
     
