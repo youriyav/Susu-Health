@@ -47,7 +47,7 @@ Le répertoire de tests.
 
 ### Installer et lancer le code
 
-⚠️ Les instructions ci-dessous sont pour **Python 3.9**. Si tu utilises une version plus récente de Python, il faut mettre à jour pytest (`poetry add pytest@latest` _devrait_ fonctionner, mais je n'ai pas testé) sans quoi tu auras des erreurs au lancement des tests.
+⚠️ Les instructions ci-dessous sont pour **Python 3.10**. Si tu utilises une version plus récente de Python, il faudra peut-être mettre à jour les dépendances si tu as des messages d'erreur.
 
 Pour installer les dépendances:
 
