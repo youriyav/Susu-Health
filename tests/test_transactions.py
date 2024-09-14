@@ -22,6 +22,12 @@ def test_hello():
     assert response.status_code == 200
     assert response.json() == {"message": "Hello World"}
 
+def test_get_transactions_balance():
+    response = client.get("users/1/transactions/balance")
+    assert response.status_code == 200
+    result=response.json()
+    assert result["solde_cagnotte"] == 0
+
 
 def test_get_transactions():
     response = client.get("users/1/transactions")
