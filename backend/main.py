@@ -33,7 +33,7 @@ async def get_balance(user_id: int) -> dict:  # pylint: disable=unused-argument
     """Computes the balance of payments for a user subscription."""
     # We expect you to write this function
     return_list = []
-    list_of_transaction = transactions.transactions_by_type(
+    list_of_transaction = transactions.transactions_by_type_and_state(
         db,
         user_id,
         type_of_transaction=TransactionType.SCHEDULED_WITHDRAWAL,

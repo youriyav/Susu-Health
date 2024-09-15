@@ -25,7 +25,7 @@ def transactions_by_type(
     db: Database, user_id: int, type_of_transaction: str
 ) -> List[TransactionRow]:
     """
-    Returns all transactions of a user.
+    Returns all transactions of a user type.
     """
     return [
         transaction
@@ -34,11 +34,11 @@ def transactions_by_type(
     ]  # methode permettant de recupérer les transaction pour un type donné
 
 
-def transactions_by_type(
+def transactions_by_type_and_state(
     db: Database, user_id: int, type_of_transaction: str, state_of_transaction: str
 ) -> List[TransactionRow]:
     """
-    Returns all transactions of a user.
+    Returns all transactions of a user by type ans state.
     """
     return [
         transaction
@@ -75,35 +75,33 @@ def create_transaction(
     return db.put("transactions", transaction_row)
 
 
-"""cette fontion permet de retourner à partir du solde et de la transaction donnés
-un tuplet contenant le :
--le montant du prélèvement
--le montant couvert par le solde actuel
--le taux (en pourcent, entre 0 et 100) de couverture du montant
-"""
-
-
 def get_cagnotte(db: Database, user_id: int) -> float:
+    """cette fontion permet de retourner à partir du solde et de la transaction donnés
+    un tuplet contenant le :
+    -le montant du prélèvement
+    -le montant couvert par le solde actuel
+    -le taux (en pourcent, entre 0 et 100) de couverture du montant
+    """
     global_amount = 0
-    list_of_complete_deposit = transactions_by_type(
+    list_of_complete_deposit = transactions_by_type_and_state(
         db,
         user_id,
         type_of_transaction=TransactionType.DEPOSIT,
         state_of_transaction=TransactionState.COMPLETED,
     )
-    list_of_complete_withdraw = transactions_by_type(
+    list_of_complete_withdraw = transactions_by_type_and_state(
         db,
         user_id,
         type_of_transaction=TransactionType.SCHEDULED_WITHDRAWAL,
         state_of_transaction=TransactionState.COMPLETED,
     )
-    list_of_complete_refund = transactions_by_type(
+    list_of_complete_refund = transactions_by_type_and_state(
         db,
         user_id,
         type_of_transaction=TransactionType.REFUND,
         state_of_transaction=TransactionState.COMPLETED,
     )
-    list_of_pending_refund = transactions_by_type(
+    list_of_pending_refund = transactions_by_type_and_state(
         db,
         user_id,
         type_of_transaction=TransactionType.REFUND,
@@ -122,9 +120,9 @@ def get_cagnotte(db: Database, user_id: int) -> float:
 
 
 def get_transaction_balance(solde: float, transaction: TransactionRow) -> tuple:
+    """fonction permettant de retourner le solde d'un utilisateur"""
     covert_amount = 0
     rate_amount = 0
-    amount_preleve = 0
     if solde > 0:
         if solde - transaction.amount > 0:
             covert_amount = transaction.amount
