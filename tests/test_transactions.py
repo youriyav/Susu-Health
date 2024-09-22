@@ -18,12 +18,21 @@ def deposit_transaction():
 
 
 def test_hello():
+    """"""
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Hello World"}
 
+def test_get_transactions_balance():
+    """function for testing balance"""
+    response = client.get("users/1/transactions/balance")
+    assert response.status_code == 200
+    result=response.json()
+    assert result["solde_cagnotte"] == 0
+
 
 def test_get_transactions():
+    """function for testing getting transaction"""
     response = client.get("users/1/transactions")
     assert response.status_code == 200
     for transaction in response.json():
@@ -31,6 +40,7 @@ def test_get_transactions():
 
 
 def test_get_existing_transaction():
+    """"""
     response = client.get("users/1/transactions/1")
     assert response.status_code == 200
     transaction = response.json()
@@ -39,16 +49,19 @@ def test_get_existing_transaction():
 
 
 def test_get_nonexisting_transaction():
+    """"""
     response = client.get("users/1/transactions/9999")
     assert response.status_code == 404
 
 
 def test_get_transaction_nonexisting_user():
+    """"""
     response = client.get("users/999/transactions/1")
     assert response.status_code == 404
 
 
 def test_create_transaction(deposit_transaction):
+    """"""
     response = client.post("users/2/transactions", json=deposit_transaction)
     assert response.status_code == 200
     transaction = response.json()

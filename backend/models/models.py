@@ -39,3 +39,9 @@ class Transaction(BaseModel):
 class TransactionRow(Row, Transaction):
     user_id: int
     state: TransactionState
+
+
+class TransactionBalanceRow(BaseModel):
+    amount_preleve: float
+    amount_couvert: float
+    rate: float
